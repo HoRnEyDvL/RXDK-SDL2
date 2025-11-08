@@ -9,11 +9,11 @@
 
 #define LOW_RES_WIDTH 160
 #define LOW_RES_HEIGHT 120
-#define WINDOW_WIDTH 720
+#define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 #define SINE_TABLE_SIZE 360
 
-static SDLTest_CommonState *state;
+static SDLTest_CommonState* state;
 int done;
 SDL_Texture* plasmaTexture = NULL;
 float sineTable[SINE_TABLE_SIZE];
@@ -67,18 +67,16 @@ void UpdatePlasma(Uint32 time) {
 void loop() {
 	SDL_Event event;
 
-    // Handle events
-    while (SDL_PollEvent(&event)) {
-        SDLTest_CommonEvent(state, &event, &done);
-    }
+	// Handle events
+	while (SDL_PollEvent(&event)) {
+		SDLTest_CommonEvent(state, &event, &done);
+	}
 
 	for (int i = 0; i < state->num_windows; ++i) {
 		SDL_Renderer* renderer = state->renderers[i];
 		if (state->windows[i] == NULL) {
 			continue;
 		}
-		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");   // or "nearest"
-		SDL_RenderSetLogicalSize(state->renderers[0], WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		Uint32 time = SDL_GetTicks();
 
@@ -90,8 +88,7 @@ void loop() {
 		SDL_RenderClear(renderer);
 
 		// Render plasma texture scaled up to full screen
-		//SDL_Rect dstRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
-		//SDL_RenderCopy(renderer, plasmaTexture, NULL, &dstRect);
+		SDL_Rect dstRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
 		SDL_RenderCopy(renderer, plasmaTexture, NULL, NULL);
 
 		// Present the renderer
